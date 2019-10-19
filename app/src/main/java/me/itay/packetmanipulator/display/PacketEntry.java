@@ -6,13 +6,13 @@ public class PacketEntry {
 
     public Packet original;
 
-    public String source;
-    public String destination;
-    public String protocol;
-    public String length;
-    public String info;
+    public String source = "";
+    public String destination = "";
+    public String protocol = "";
+    public String length = "";
+    public String info = "";
 
-    public int backgroundColor;
-    public int textColor;
+    public int backgroundColor = 0xFFFFFFFF;
+    public int textColor = 0x00000000;
 
 }

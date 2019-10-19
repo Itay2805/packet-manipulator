@@ -5,7 +5,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import me.itay.packetmanipulator.display.PacketEntry;
 import me.itay.packetmanipulator.display.PacketEntryTransfomer;
+import me.itay.packetmanipulator.display.impl.ARPTransfomer;
 import me.itay.packetmanipulator.display.impl.EthernetTransfomer;
+import me.itay.packetmanipulator.display.impl.IPv4Transformer;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -20,7 +22,9 @@ import org.pcap4j.core.NotOpenException;
 import org.pcap4j.core.PcapHandle;
 import org.pcap4j.core.PcapNetworkInterface;
 import org.pcap4j.core.Pcaps;
+import org.pcap4j.packet.ArpPacket;
 import org.pcap4j.packet.EthernetPacket;
+import org.pcap4j.packet.IpV4Packet;
 import org.pcap4j.packet.Packet;
 
 import java.io.IOException;
@@ -40,8 +44,9 @@ public class SnifferActivity extends AppCompatActivity implements Runnable {
     private static HashMap<Class<?>, PacketEntryTransfomer> transfomers = new HashMap<>();
     static {
         transfomers.put(EthernetPacket.class, new EthernetTransfomer());
+        transfomers.put(IpV4Packet.class, new IPv4Transformer());
+        transfomers.put(ArpPacket.class, new ARPTransfomer());
     }
-
 
     private PcapNetworkInterface pif;
     private PcapHandle handle;
