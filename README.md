@@ -4,10 +4,13 @@ Some time ago I tried to search for a nice wireshark like app for android, and e
 didn't work, or wasn't what I was looking for (for example there are some great packet capture applications that use the android vpn
 feature to capture network activity of other apps, but I want something to view raw network traffic and promisc). So I set to create my own!
 
-Right now this is pretty basic, there is a menu to choose what interface to capture on and when you press start it will sniff one packet and log it to
-catlog (so not so useful). The majority of the work so far was to get pcap4j to work on android...
+Right now this is pretty basic, there is a menu to choose what interface to capture on and when you press start it will start capturing
+packets and add them to the list on the screen. I started adding some basic trasnfomers for the entries (so they can show fancy info or whatever) but right now only got ether, linux sll, ipv4 and arp.
 
 I hope that somewhen I will also able to upgrade this to be able to send packets
+
+How it looks:
+<img width="200" src="https://i.imgur.com/VMYOimq.png">
 
 ## How did I get pcap4j to work on android?
 
