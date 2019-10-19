@@ -1,0 +1,27 @@
+{
+  "buildFiles": [
+    "D:\\Users\\Itay\\AppData\\Local\\ndk\\20.0.5594570\\build\\cmake\\platforms.cmake",
+    "D:\\Users\\Itay\\AndroidStudioProjects\\PacketManipulator\\app\\src\\main\\cpp\\CMakeLists.txt",
+    "D:\\Users\\Itay\\AndroidStudioProjects\\PacketManipulator\\app\\src\\main\\cpp\\pcapproxy\\CMakeLists.txt",
+    "D:\\Users\\Itay\\AppData\\Local\\ndk\\20.0.5594570\\build\\cmake\\android.toolchain.cmake",
+    "D:\\Users\\Itay\\AndroidStudioProjects\\PacketManipulator\\app\\src\\main\\cpp\\bufferutils\\CMakeLists.txt"
+  ],
+  "cleanCommands": [
+    "D:\\Users\\Itay\\AppData\\Local\\cmake\\3.10.2.4988404\\bin\\ninja.exe -C \"D:\\Users\\Itay\\AndroidStudioProjects\\PacketManipulator\\app\\.cxx\\cmake\\debug\\armeabi-v7a\" clean"
+  ],
+  "buildTargetsCommand": "D:\\Users\\Itay\\AppData\\Local\\cmake\\3.10.2.4988404\\bin\\ninja.exe -C \"D:\\Users\\Itay\\AndroidStudioProjects\\PacketManipulator\\app\\.cxx\\cmake\\debug\\armeabi-v7a\" {LIST_OF_TARGETS_TO_BUILD}",
+  "libraries": {
+    "bufferutils-Debug-armeabi-v7a": {
+      "artifactName": "bufferutils",
+      "buildCommand": "D:\\Users\\Itay\\AppData\\Local\\cmake\\3.10.2.4988404\\bin\\ninja.exe -C \"D:\\Users\\Itay\\AndroidStudioProjects\\PacketManipulator\\app\\.cxx\\cmake\\debug\\armeabi-v7a\" bufferutils",
+      "abi": "armeabi-v7a",
+      "output": "D:\\Users\\Itay\\AndroidStudioProjects\\PacketManipulator\\app\\build\\intermediates\\cmake\\debug\\obj\\armeabi-v7a\\libbufferutils.so"
+    },
+    "libpcapproxy.so-Debug-armeabi-v7a": {
+      "artifactName": "libpcapproxy.so",
+      "buildCommand": "D:\\Users\\Itay\\AppData\\Local\\cmake\\3.10.2.4988404\\bin\\ninja.exe -C \"D:\\Users\\Itay\\AndroidStudioProjects\\PacketManipulator\\app\\.cxx\\cmake\\debug\\armeabi-v7a\" libpcapproxy.so",
+      "abi": "armeabi-v7a",
+      "output": "D:\\Users\\Itay\\AndroidStudioProjects\\PacketManipulator\\app\\.cxx\\cmake\\debug\\armeabi-v7a\\pcapproxy\\libpcapproxy.so"
+    }
+  }
+}

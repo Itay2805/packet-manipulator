@@ -1,0 +1,8 @@
+D:/Users/Itay/AndroidStudioProjects/PacketManipulator/app/.cxx/cmake/release/arm64-v8a/CMakeFiles/edit_cache.dir
+D:/Users/Itay/AndroidStudioProjects/PacketManipulator/app/.cxx/cmake/release/arm64-v8a/CMakeFiles/rebuild_cache.dir
+D:/Users/Itay/AndroidStudioProjects/PacketManipulator/app/.cxx/cmake/release/arm64-v8a/pcapproxy/CMakeFiles/edit_cache.dir
+D:/Users/Itay/AndroidStudioProjects/PacketManipulator/app/.cxx/cmake/release/arm64-v8a/pcapproxy/CMakeFiles/libpcapproxy.so.dir
+D:/Users/Itay/AndroidStudioProjects/PacketManipulator/app/.cxx/cmake/release/arm64-v8a/pcapproxy/CMakeFiles/rebuild_cache.dir
+D:/Users/Itay/AndroidStudioProjects/PacketManipulator/app/.cxx/cmake/release/arm64-v8a/bufferutils/CMakeFiles/bufferutils.dir
+D:/Users/Itay/AndroidStudioProjects/PacketManipulator/app/.cxx/cmake/release/arm64-v8a/bufferutils/CMakeFiles/edit_cache.dir
+D:/Users/Itay/AndroidStudioProjects/PacketManipulator/app/.cxx/cmake/release/arm64-v8a/bufferutils/CMakeFiles/rebuild_cache.dir

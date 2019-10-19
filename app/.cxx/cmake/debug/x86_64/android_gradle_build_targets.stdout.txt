@@ -1,0 +1,12 @@
+ninja: Entering directory `D:\Users\Itay\AndroidStudioProjects\PacketManipulator\app\.cxx\cmake\debug\x86_64'
+[1/4] Building C object bufferutils/CMakeFiles/bufferutils.dir/bufferutils.c.o
+[2/4] Building C object pcapproxy/CMakeFiles/libpcapproxy.so.dir/pcap-proxy.c.o
+D:/Users/Itay/AndroidStudioProjects/PacketManipulator/app/src/main/cpp/pcapproxy/pcap-proxy.c:14:1: warning: typedef requires a name [-Wmissing-declarations]
+typedef struct pcap_if {
+^~~~~~~
+D:/Users/Itay/AndroidStudioProjects/PacketManipulator/app/src/main/cpp/pcapproxy/pcap-proxy.c:22:1: warning: typedef requires a name [-Wmissing-declarations]
+typedef struct pcap_addr {
+^~~~~~~
+2 warnings generated.
+[3/4] Linking C shared library D:\Users\Itay\AndroidStudioProjects\PacketManipulator\app\build\intermediates\cmake\debug\obj\x86_64\libbufferutils.so
+[4/4] Linking C executable pcapproxy\libpcapproxy.so

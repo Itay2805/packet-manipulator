@@ -1,0 +1,10 @@
+ninja: Entering directory `D:\Users\Itay\AndroidStudioProjects\PacketManipulator\app\.cxx\cmake\debug\arm64-v8a'
+[1/2] Building C object CMakeFiles/libpacketsniffer.so.dir/packet-sniffer.c.o
+D:/Users/Itay/AndroidStudioProjects/PacketManipulator/app/src/main/cpp/packet-sniffer.c:56:72: warning: incompatible pointer types passing 'size_t *' (aka 'unsigned long *') to parameter of type 'socklen_t *' (aka 'unsigned int *') [-Wincompatible-pointer-types]
+        int len = recvfrom(sock_raw, buffer, sizeof(buffer), 0, &addr, &addrlen);
+                                                                       ^~~~~~~~
+D:/Users/Itay/AppData/Local/ndk/20.0.5594570/toolchains/llvm/prebuilt/windows-x86_64/sysroot/usr/include\sys/socket.h:335:119: note: passing argument to parameter '__src_addr_length' here
+__socketcall ssize_t recvfrom(int __fd, void* __buf, size_t __n, int __flags, struct sockaddr* __src_addr, socklen_t* __src_addr_length);
+                                                                                                                      ^
+1 warning generated.
+[2/2] Linking C executable libpacketsniffer.so

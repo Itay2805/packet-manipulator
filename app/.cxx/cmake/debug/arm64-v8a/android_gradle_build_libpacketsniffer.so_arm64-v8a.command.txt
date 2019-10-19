@@ -1,0 +1,7 @@
+Executable : D:\Users\Itay\AppData\Local\cmake\3.10.2.4988404\bin\ninja.exe
+arguments : 
+-C
+D:\Users\Itay\AndroidStudioProjects\PacketManipulator\app\.cxx\cmake\debug\arm64-v8a
+libpacketsniffer.so
+jvmArgs : 
+

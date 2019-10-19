@@ -1,0 +1,5 @@
+# ninja log v5
+2	289	593138821	bufferutils/CMakeFiles/bufferutils.dir/bufferutils.c.o	3246a72f883b6f73
+0	338	593138821	pcapproxy/CMakeFiles/libpcapproxy.so.dir/pcap-proxy.c.o	da7aeb8bb384a69a
+290	450	593138821	D:/Users/Itay/AndroidStudioProjects/PacketManipulator/app/build/intermediates/cmake/debug/obj/x86/libbufferutils.so	5991879e4ace0cc4
+339	456	593138821	pcapproxy/libpcapproxy.so	2847720a0f736e7d
