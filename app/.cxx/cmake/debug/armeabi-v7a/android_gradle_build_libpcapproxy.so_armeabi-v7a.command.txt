@@ -1,7 +1,0 @@
-Executable : D:\Users\Itay\AppData\Local\cmake\3.10.2.4988404\bin\ninja.exe
-arguments : 
--C
-D:\Users\Itay\AndroidStudioProjects\PacketManipulator\app\.cxx\cmake\debug\armeabi-v7a
-libpcapproxy.so
-jvmArgs : 
-

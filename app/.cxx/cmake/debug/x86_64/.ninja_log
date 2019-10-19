@@ -1,9 +1,0 @@
-# ninja log v5
-0	85	593055106	CMakeFiles/packet-sniffer.dir/packet-sniffer.c.o	e2c87275c4bd45ba
-87	150	593055106	packet-sniffer	6f498214e476b304
-0	84	593055461	CMakeFiles/libpacketsniffer.so.dir/packet-sniffer.c.o	1dd4243a00b73533
-85	152	593055461	libpacketsniffer.so	29e360660fae3f79
-3	325	593138821	bufferutils/CMakeFiles/bufferutils.dir/bufferutils.c.o	931b92596f46d1f0
-1	327	593138821	pcapproxy/CMakeFiles/libpcapproxy.so.dir/pcap-proxy.c.o	db9541de6a8c0dfd
-325	1409	593138822	D:/Users/Itay/AndroidStudioProjects/PacketManipulator/app/build/intermediates/cmake/debug/obj/x86_64/libbufferutils.so	7b13dae36c8eb2b9
-328	1409	593138822	pcapproxy/libpcapproxy.so	89d563c24e42eb35

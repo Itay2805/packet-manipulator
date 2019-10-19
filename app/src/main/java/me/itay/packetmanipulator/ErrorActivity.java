@@ -13,7 +13,7 @@ public class ErrorActivity extends AppCompatActivity {
         setContentView(R.layout.activity_error);
 
         // get the controls
-        TextView txtError = findViewById(R.id.txtError);
+        TextView txtError = findViewById(R.id.lblError);
 
         // get the error and set it
         String errorString = getIntent().getStringExtra("EXTRA_ERROR_STRING");
