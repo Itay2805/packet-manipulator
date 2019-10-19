@@ -9,7 +9,6 @@ packets and add them to the list on the screen. I started adding some basic tras
 
 I hope that somewhen I will also able to upgrade this to be able to send packets
 
-How it looks:
 <img width="200" src="https://i.imgur.com/VMYOimq.png">
 
 ## How did I get pcap4j to work on android?
