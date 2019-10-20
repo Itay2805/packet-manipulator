@@ -97,7 +97,7 @@ public final class ArpPacket extends AbstractPacket implements PacketDissector {
     }
 
     @Override
-    public void dissect(PacketEntry entry) {
+    public boolean dissect(PacketEntry entry) {
         ArpHeader header = getHeader();
 
         entry.protocol = "ARP";
@@ -110,6 +110,8 @@ public final class ArpPacket extends AbstractPacket implements PacketDissector {
         }else {
             entry.info = header.getOperation().toString();
         }
+
+        return false;
     }
 
     /** @author Kaito Yamada */

@@ -171,7 +171,7 @@ public final class UdpPacket extends AbstractPacket implements TransportPacket, 
 
     @SuppressLint("DefaultLocale")
     @Override
-    public void dissect(PacketEntry entry) {
+    public boolean dissect(PacketEntry entry) {
         UdpHeader header = getHeader();
 
         entry.protocol = "UDP";
@@ -180,6 +180,8 @@ public final class UdpPacket extends AbstractPacket implements TransportPacket, 
                 header.getSrcPort().valueAsInt(),
                 header.getDstPort().valueAsInt(),
                 header.getLengthAsInt());
+
+        return false;
     }
 
     /**

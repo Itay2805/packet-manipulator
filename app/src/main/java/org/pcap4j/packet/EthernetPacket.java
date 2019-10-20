@@ -220,13 +220,15 @@ public final class EthernetPacket extends AbstractPacket implements PacketDissec
     }
 
     @Override
-    public void dissect(PacketEntry entry) {
+    public boolean dissect(PacketEntry entry) {
         EthernetHeader header = getHeader();
 
         entry.destination = header.getDstAddr().toString();
         entry.source = header.getSrcAddr().toString();
         entry.protocol = "ETH";
         entry.info = header.getType().toString();
+
+        return false;
     }
 
     /**

@@ -16,11 +16,14 @@ import org.pcap4j.packet.namednumber.IcmpV4Code;
 import org.pcap4j.packet.namednumber.IcmpV4Type;
 import org.pcap4j.util.ByteArrays;
 
+import me.itay.packetmanipulator.display.PacketDissector;
+import me.itay.packetmanipulator.display.PacketEntry;
+
 /**
  * @author Kaito Yamada
  * @since pcap4j 0.9.11
  */
-public final class IcmpV4CommonPacket extends AbstractPacket {
+public final class IcmpV4CommonPacket extends AbstractPacket implements PacketDissector {
 
     /** */
     private static final long serialVersionUID = 7643067752830062365L;
@@ -104,6 +107,16 @@ public final class IcmpV4CommonPacket extends AbstractPacket {
         if (header.checksum == 0 && acceptZero) {
             return true;
         }
+
+        return false;
+    }
+
+    @Override
+    public boolean dissect(PacketEntry entry) {
+        IcmpV4CommonHeader header = getHeader();
+
+        entry.protocol = "ICMP";
+        entry.info = String.format("%s (%s)", header.getType().name(), header.getCode().name());
 
         return false;
     }

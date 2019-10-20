@@ -4,6 +4,6 @@ import org.pcap4j.packet.Packet;
 
 public interface PacketDissector {
 
-    public void dissect(PacketEntry entry);
+    public boolean dissect(PacketEntry entry);
 
 }

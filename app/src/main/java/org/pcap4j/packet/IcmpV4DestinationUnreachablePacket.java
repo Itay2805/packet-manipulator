@@ -22,7 +22,7 @@ import me.itay.packetmanipulator.display.PacketEntry;
  * @author Kaito Yamada
  * @since pcap4j 0.9.11
  */
-public final class IcmpV4DestinationUnreachablePacket extends IcmpV4InvokingPacketPacket {
+public final class IcmpV4DestinationUnreachablePacket extends IcmpV4InvokingPacketPacket implements PacketDissector {
 
     /** */
     private static final long serialVersionUID = 2435425895590241470L;
@@ -81,6 +81,16 @@ public final class IcmpV4DestinationUnreachablePacket extends IcmpV4InvokingPack
     @Override
     public Builder getBuilder() {
         return new Builder(this);
+    }
+
+    @Override
+    public boolean dissect(PacketEntry entry) {
+
+        entry.backgroundColor = Color.parseColor("#12272E");
+        entry.textColor = Color.parseColor("#B7F774");
+
+        // don't continue parsing payloads (they are ip stuff most probably)
+        return true;
     }
 
     /**

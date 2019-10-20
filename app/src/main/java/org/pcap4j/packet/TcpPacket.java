@@ -171,7 +171,7 @@ public final class TcpPacket extends AbstractPacket implements TransportPacket, 
 
     @SuppressLint("DefaultLocale")
     @Override
-    public void dissect(PacketEntry entry) {
+    public boolean dissect(PacketEntry entry) {
         TcpHeader header = getHeader();
 
         entry.protocol = "TCP";
@@ -200,6 +200,8 @@ public final class TcpPacket extends AbstractPacket implements TransportPacket, 
                 header.getWindowAsInt(),
                 length
                 );
+
+        return false;
     }
 
     /**

@@ -28,6 +28,7 @@ import org.pcap4j.core.NotOpenException;
 import org.pcap4j.core.PcapHandle;
 import org.pcap4j.core.PcapNetworkInterface;
 import org.pcap4j.core.Pcaps;
+import org.pcap4j.packet.IcmpV4CommonPacket;
 import org.pcap4j.packet.Packet;
 
 import java.io.IOException;
@@ -121,12 +122,16 @@ public class SnifferActivity extends AppCompatActivity implements Runnable, Navi
                 Packet packet = handle.getNextPacket();
                 PacketEntry entry = new PacketEntry();
                 entry.original = packet;
+                entry.protocol = packet.getClass().toString();
+                entry.info = packet.toString();
 
                 // transform it if possible
                 Packet current = packet;
                 while(current != null) {
                     if(current instanceof PacketDissector) {
-                        ((PacketDissector) current).dissect(entry);
+                        if(((PacketDissector) current).dissect(entry)) {
+                            break;
+                        }
                     }
                     current = current.getPayload();
                 }

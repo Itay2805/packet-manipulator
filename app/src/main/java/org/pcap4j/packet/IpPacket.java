@@ -46,11 +46,12 @@ public interface IpPacket extends Packet, PacketDissector {
         public InetAddress getDstAddr();
     }
 
-    default void dissect(PacketEntry entry) {
+    default boolean dissect(PacketEntry entry) {
         IpHeader header = getHeader();
         entry.protocol = header.getVersion().name();
         entry.source = header.getSrcAddr().getHostAddress();
         entry.destination = header.getDstAddr().getHostAddress();
         entry.info = header.getProtocol().toString();
+        return false;
     }
 }
