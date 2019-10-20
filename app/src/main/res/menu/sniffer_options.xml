@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+    <item
+        android:id="@+id/option_start_stop"
+        android:icon="@drawable/ic_stop"
+        android:checkable="false"
+        android:title="@string/stop" />
+<!--        <item-->
+<!--            android:id="@+id/option_restart"-->
+<!--            android:title="Restart" />-->
+    <item
+        android:id="@+id/option_save"
+        android:icon="@drawable/ic_save"
+        android:checkable="false"
+        android:title="@string/save"/>
+    <item android:title="@string/navigation">
+        <menu>
+            <item
+                android:id="@+id/option_auto_scroll"
+                android:icon="@drawable/ic_auto_scroll"
+                android:checkable="true"
+                android:title="@string/auto_scroll" />
+            <item
+                android:id="@+id/option_go_to_first"
+                android:icon="@drawable/ic_goto_first"
+                android:checkable="false"
+                android:title="@string/go_to_first" />
+            <item
+                android:id="@+id/option_go_to_last"
+                android:icon="@drawable/ic_goto_last"
+                android:checkable="false"
+                android:title="@string/go_to_last" />
+            <item
+                android:id="@+id/option_go_to"
+                android:icon="@drawable/ic_goto"
+                android:checkable="false"
+                android:title="@string/go_to" />
+        </menu>
+    </item>
+</menu>
