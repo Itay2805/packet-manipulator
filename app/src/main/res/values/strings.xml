@@ -6,11 +6,11 @@
     <string name="close_navigation_drawer">Close navigation drawer</string>
 
     <!-- Sniffer options -->
+    <string name="stop">Stop</string>
+    <string name="save">Save</string>
+    <string name="navigation">Navigation</string>
     <string name="auto_scroll">Auto Scroll</string>
     <string name="go_to_last">Go to last</string>
     <string name="go_to_first">Go to first</string>
     <string name="go_to">Go to …</string>
-    <string name="save">Save</string>
-    <string name="navigation">Navigation</string>
-    <string name="stop">Stop</string>
 </resources>

@@ -28,6 +28,11 @@ public class PcapProxy {
     private static final int PCAP_STRERROR = 10;
     private static final int PCAP_GETERR = 11;
     private static final int PCAP_STATS = 12;
+    private static final int PCAP_DUMP_OPEN = 13;
+    private static final int PCAP_DUMP = 14;
+    private static final int PCAP_DUMP_FLUSH = 15;
+    private static final int PCAP_DUMP_FTELL = 16;
+    private static final int PCAP_DUMP_CLOSE = 17;
 
     // global instance
 
@@ -180,6 +185,37 @@ public class PcapProxy {
         stream.writeInt(PCAP_STATS);
         stream.writeLong(handle);
         return new pcap_stat(stream);
+    }
+
+    public long pcap_dump_open(long handle, String filepath) {
+        stream.writeInt(PCAP_DUMP_OPEN);
+        stream.writeLong(handle);
+        stream.writeString(filepath);
+
+        return stream.readLong();
+    }
+
+    public void pcap_dump(long dumper, pcap_pkthdr packet) {
+        stream.writeInt(PCAP_DUMP);
+        stream.writeLong(dumper);
+        packet.write(stream);
+    }
+
+    public void pcap_dump_flush(long dumper) {
+        stream.writeInt(PCAP_DUMP_FLUSH);
+        stream.writeLong(dumper);
+        stream.checkErr();
+    }
+
+    public long pcap_dump_ftell(long dumper) {
+        stream.writeInt(PCAP_DUMP_FTELL);
+        stream.writeLong(dumper);
+        return stream.readLong();
+    }
+
+    public void pcap_dump_close(long dumper) {
+        stream.writeInt(PCAP_DUMP_CLOSE);
+        stream.writeLong(dumper);
     }
 
 }

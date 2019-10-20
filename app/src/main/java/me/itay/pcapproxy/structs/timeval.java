@@ -12,4 +12,13 @@ public class timeval {
         this.tv_usec = stream.readLong();
     }
 
+    public timeval() {
+
+    }
+
+    public void write(DataStream stream) {
+        stream.writeLong(this.tv_sec);
+        stream.writeLong(this.tv_usec);
+    }
+
 }

@@ -42,6 +42,16 @@ public class DataStream {
         }
     }
 
+    public void writeBytes(byte[] bytes) {
+        try {
+            out.write(bytes);
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw new PcapProxyException();
+        }
+    }
+
+
     public short readShort() {
         byte[] bytes = new byte[2];
 

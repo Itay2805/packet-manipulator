@@ -223,7 +223,40 @@ public class PcapHandle implements Closeable {
 
     // TODO: dispatch
 
-    // TODO: dumpOpen
+    /**
+     * @param filePath "-" means stdout. The dlt of the PcapHandle which captured the packets you want
+     *     to dump must be the same as this dlt.
+     * @return an opened PcapDumper.
+     * @throws PcapProxyException if an error occurs in the pcap native library.
+     * @throws NotOpenException if this PcapHandle is not open.
+     */
+    public PcapDumper dumpOpen(String filePath) throws PcapProxyException, NotOpenException {
+        if (filePath == null) {
+            throw new NullPointerException("filePath must not be null.");
+        }
+        if (!open) {
+            throw new NotOpenException();
+        }
+
+        long dumper;
+        if (!handleLock.readLock().tryLock()) {
+            throw new NotOpenException();
+        }
+        try {
+            if (!open) {
+                throw new NotOpenException();
+            }
+
+            dumper = PcapProxy.get().pcap_dump_open(handle, filePath);
+            if (dumper == 0) {
+                throw new PcapProxyException(getError());
+            }
+        } finally {
+            handleLock.readLock().unlock();
+        }
+
+        return new PcapDumper(dumper, timestampPrecision);
+    }
 
     // TODO: breakLoop
 

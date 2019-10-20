@@ -42,6 +42,7 @@ struct pcap_stat {
 };
 
 typedef void pcap_t;
+typedef void pcap_dumper_t;
 
 static const char*  (*pcap_lib_version)(void);
 static int          (*pcap_findalldevs)(pcap_if_t **alldevsp, char *errbuf);
@@ -56,6 +57,12 @@ char*               (*pcap_lookupdev)(char *errbuf);
 char*               (*pcap_strerror)(int errno);
 char*               (*pcap_geterr)(pcap_t *p);
 int                 (*pcap_stats)(pcap_t *p, struct pcap_stat *ps);
+
+pcap_dumper_t*      (*pcap_dump_open)(pcap_t *p, const char *fname);
+void                (*pcap_dump)(pcap_dumper_t * dumper, const struct pcap_pkthdr *h, const u_char *sp);
+int                 (*pcap_dump_flush)(pcap_dumper_t *p);
+long                (*pcap_dump_ftell)(pcap_dumper_t *);
+void                (*pcap_dump_close)(pcap_dumper_t *p);
 
 ///////////////////////////////////////////////
 // stream handling
@@ -313,6 +320,51 @@ void comm_pcap_stats() {
     write_int(stats.ps_ifdrop);
 }
 
+void comm_pcap_dump_open() {
+    void* handle = (void*)read_long();
+    char* str = read_string();
+    void* res = pcap_dump_open(handle, str);
+    write_long((int64_t) res);
+    free(str);
+}
+
+void comm_pcap_dump() {
+    void* handle = (void*)read_long();
+    struct pcap_pkthdr header = {0};
+    header.ts.tv_sec = (__kernel_time_t) read_long();
+    header.ts.tv_usec = (__kernel_time_t) read_long();
+    header.caplen = read_int();
+    header.len = read_int();
+    char* buffer = malloc((size_t) header.len);
+    fread(buffer, 1, (size_t) header.len, stdin);
+    pcap_dump(handle, &header, (const u_char *) buffer);
+    free(buffer);
+}
+
+void comm_pcap_dump_flush() {
+    void* handle = (void*)read_long();
+    int rc = pcap_dump_flush(handle);
+    if(rc != 0) {
+
+        write_bool(false);
+        write_string(pcap_strerror(rc));
+
+    }else {
+
+        write_bool(true);
+
+    }
+}
+
+void comm_pcap_dump_ftell() {
+    void* handle = (void*)read_long();
+    pcap_dump_close(handle);
+}
+
+void comm_pcap_dump_close() {
+    void* handle = (void*)read_long();
+    pcap_dump_close(handle);
+}
 
 ///////////////////////////////////////////////
 // Server main
@@ -331,6 +383,11 @@ void comm_pcap_stats() {
 #define PCAP_STRERROR       10
 #define PCAP_GETERR         11
 #define PCAP_STATS          12
+#define PCAP_DUMP_OPEN      13
+#define PCAP_DUMP           14
+#define PCAP_DUMP_FLUSH     15
+#define PCAP_DUMP_FTELL     16
+#define PCAP_DUMP_CLOSE     17
 
 // handlers per function
 typedef void (*command_handler_t)();
@@ -347,6 +404,11 @@ command_handler_t handlers[] = {
         [PCAP_STRERROR] = comm_pcap_strerror,
         [PCAP_GETERR] = comm_pcap_geterr,
         [PCAP_STATS] = comm_pcap_stats,
+        [PCAP_DUMP_OPEN] = comm_pcap_dump_open,
+        [PCAP_DUMP] = comm_pcap_dump,
+        [PCAP_DUMP_FLUSH] = comm_pcap_dump_flush,
+        [PCAP_DUMP_FTELL] = comm_pcap_dump_ftell,
+        [PCAP_DUMP_CLOSE] = comm_pcap_dump_close,
 };
 
 #define LOAD_FUNC(name) \
@@ -386,6 +448,11 @@ int main(int argc, char* argv[]) {
     LOAD_FUNC(pcap_strerror);
     LOAD_FUNC(pcap_geterr);
     LOAD_FUNC(pcap_stats);
+    LOAD_FUNC(pcap_dump_open);
+    LOAD_FUNC(pcap_dump);
+    LOAD_FUNC(pcap_dump_flush);
+    LOAD_FUNC(pcap_dump_ftell);
+    LOAD_FUNC(pcap_dump_close);
 
     // handling of commands
     while(1) {

@@ -17,4 +17,15 @@ public class pcap_pkthdr {
         stream.readBytes(data);
     }
 
+    public pcap_pkthdr() {
+
+    }
+
+    public void write(DataStream stream) {
+        this.ts.write(stream);
+        stream.writeInt(this.caplen);
+        stream.writeInt(this.len);
+        stream.readBytes(this.data);
+    }
+
 }

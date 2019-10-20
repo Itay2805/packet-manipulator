@@ -20,6 +20,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.material.navigation.NavigationView;
 
@@ -163,7 +164,11 @@ public class SnifferActivity extends AppCompatActivity implements Runnable, Navi
         switch(menuItem.getItemId()) {
 
             case R.id.option_save:
+                if(handle.isOpen()) {
+                    Toast.makeText(this, "Can not save capture while running", Toast.LENGTH_LONG).show();
+                }else {
 
+                }
                 break;
 
             case R.id.option_auto_scroll:
