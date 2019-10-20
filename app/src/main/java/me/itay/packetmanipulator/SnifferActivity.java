@@ -4,49 +4,25 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import me.itay.packetmanipulator.display.PacketEntry;
-import me.itay.packetmanipulator.display.PacketEntryTransfomer;
-import me.itay.packetmanipulator.display.impl.ARPTransfomer;
-import me.itay.packetmanipulator.display.impl.EthernetTransfomer;
-import me.itay.packetmanipulator.display.impl.IPv4Transformer;
+import me.itay.packetmanipulator.display.PacketDissector;
 
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ScrollView;
-import android.widget.TableLayout;
-import android.widget.TableRow;
-import android.widget.TextView;
 
 import org.pcap4j.core.NotOpenException;
 import org.pcap4j.core.PcapHandle;
 import org.pcap4j.core.PcapNetworkInterface;
 import org.pcap4j.core.Pcaps;
-import org.pcap4j.packet.ArpPacket;
-import org.pcap4j.packet.EthernetPacket;
-import org.pcap4j.packet.IpV4Packet;
 import org.pcap4j.packet.Packet;
 
 import java.io.IOException;
-import java.util.ArrayDeque;
-import java.util.HashMap;
-import java.util.Locale;
-import java.util.Queue;
-import java.util.Stack;
 import java.util.concurrent.ConcurrentLinkedQueue;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 public class SnifferActivity extends AppCompatActivity implements Runnable {
 
     private static final String TAG = "SnifferActivity";
-
-    // register all transfomers
-    private static HashMap<Class<?>, PacketEntryTransfomer> transfomers = new HashMap<>();
-    static {
-        transfomers.put(EthernetPacket.class, new EthernetTransfomer());
-        transfomers.put(IpV4Packet.class, new IPv4Transformer());
-        transfomers.put(ArpPacket.class, new ARPTransfomer());
-    }
 
     private PcapNetworkInterface pif;
     private PcapHandle handle;
@@ -98,14 +74,12 @@ public class SnifferActivity extends AppCompatActivity implements Runnable {
                 Packet packet = handle.getNextPacket();
                 PacketEntry entry = new PacketEntry();
                 entry.original = packet;
-                entry.length = Integer.toString(packet.length());
 
                 // transform it if possible
                 Packet current = packet;
                 while(current != null) {
-                    PacketEntryTransfomer transfomer = transfomers.get(current.getClass());
-                    if(transfomer != null) {
-                        transfomer.transformEntry(current, entry);
+                    if(current instanceof PacketDissector) {
+                        ((PacketDissector) current).dissect(entry);
                     }
                     current = current.getPayload();
                 }

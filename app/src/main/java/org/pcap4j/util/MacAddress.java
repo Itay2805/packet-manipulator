@@ -84,4 +84,12 @@ public final class MacAddress extends LinkLayerAddress {
     public boolean isGloballyUnique() {
         return (getAddress()[0] & 2) == 0;
     }
+
+    @Override
+    public String toString() {
+        if(this.equals(ETHER_BROADCAST_ADDRESS)) {
+            return "Broadcast";
+        }
+        return super.toString();
+    }
 }
