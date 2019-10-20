@@ -7,12 +7,14 @@
 
 package org.pcap4j.packet;
 
+import android.annotation.SuppressLint;
 import android.graphics.Color;
 
 import static org.pcap4j.util.ByteArrays.*;
 
 import java.net.InetAddress;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import org.pcap4j.packet.namednumber.ArpHardwareType;
 import org.pcap4j.packet.namednumber.ArpOperation;
@@ -96,19 +98,191 @@ public final class ArpPacket extends AbstractPacket implements PacketDissector {
         return new Builder(this);
     }
 
+    @SuppressLint("DefaultLocale")
     @Override
     public boolean dissect(PacketEntry entry) {
         ArpHeader header = getHeader();
 
-        entry.protocol = "ARP";
-        entry.backgroundColor = Color.parseColor("#FAF0D7");
-
-        if(header.getOperation() == ArpOperation.REPLY) {
-            entry.info = String.format("%s is at %s",
-                    header.getSrcProtocolAddr().getHostAddress(),
-                    header.getSrcHardwareAddr());
+        // set the protocol
+        if(header.getOperation() == ArpOperation.REQUEST_REVERSE ||
+           header.getOperation() == ArpOperation.REPLY_REVERSE) {
+            entry.protocol = "RARP";
+        } else if(header.getOperation() == ArpOperation.DRARP_ERROR ||
+                  header.getOperation() == ArpOperation.DRARP_REPLY ||
+                  header.getOperation() == ArpOperation.DRARP_REQUEST) {
+            entry.protocol = "DRARP";
+        } else if(header.getOperation() == ArpOperation.INARP_REQUEST ||
+                  header.getOperation() == ArpOperation.INARP_REPLY) {
+            entry.protocol = "Inverse ARP";
+        } else if(header.getOperation() == ArpOperation.MARS_GROUPLIST_REPLY ||
+                header.getOperation() == ArpOperation.MARS_GROUPLIST_REQUEST ||
+                header.getOperation() == ArpOperation.MARS_JOIN ||
+                header.getOperation() == ArpOperation.MARS_LEAVE ||
+                header.getOperation() == ArpOperation.MARS_MSERV ||
+                header.getOperation() == ArpOperation.MARS_UNSERV ||
+                header.getOperation() == ArpOperation.MARS_SJOIN ||
+                header.getOperation() == ArpOperation.MARS_SLEAVE ||
+                header.getOperation() == ArpOperation.MARS_NAK ||
+                header.getOperation() == ArpOperation.MARS_MULTI ||
+                header.getOperation() == ArpOperation.MARS_REDIRECT_MAP ||
+                header.getOperation() == ArpOperation.MARS_REQUEST) {
+            entry.protocol = "MARS";
+        } else if(header.getOperation() == ArpOperation.MAPOS_UNARP) {
+            entry.protocol = "MAPOS";
         }else {
-            entry.info = header.getOperation().toString();
+            entry.protocol = "ARP";
+        }
+
+        boolean is_gratuitous = false;
+        boolean is_announcement = false;
+        boolean is_probe = false;
+
+        if((header.getOperation() == ArpOperation.REQUEST || header.getOperation() == ArpOperation.REPLY) &&
+            header.getSrcProtocolAddr().equals(header.getDstProtocolAddr())) {
+            is_gratuitous = true;
+
+            if(header.getOperation() == ArpOperation.REQUEST &&
+               header.getDstHardwareAddr().equals(MacAddress.getByAddress(new byte[6]))) {
+                is_announcement = true;
+            }
+        }else {
+            if(header.getOperation() == ArpOperation.REQUEST &&
+               header.getDstHardwareAddr().equals(MacAddress.getByAddress(new byte[6])) &&
+               Arrays.equals(header.getSrcProtocolAddr().getAddress(), new byte[header.getProtocolAddrLengthAsInt()])) {
+                is_probe = true;
+            }
+        }
+
+        if(header.getOperation() == ArpOperation.REQUEST) {
+            if(is_gratuitous) {
+                if(is_announcement) {
+                    entry.info = String.format("ARP Announcement for %s",
+                            header.getDstProtocolAddr().getHostAddress());
+                }else {
+                    entry.info = String.format("Gratuitous ARP for %s (Request)",
+                            header.getDstProtocolAddr().getHostAddress());
+                }
+            }else if(is_probe) {
+                entry.info = String.format("Who has %s? (ARP Prove)",
+                        header.getSrcProtocolAddr().getHostAddress());
+            }else {
+                entry.info = String.format("Who has %s? Tell %s",
+                        header.getSrcProtocolAddr().getHostAddress(),
+                        header.getDstProtocolAddr().getHostAddress());
+            }
+
+        } else if(header.getOperation() == ArpOperation.REPLY) {
+            if (is_gratuitous) {
+                entry.info = String.format("Gratuitous ARP for %s (Reply)",
+                        header.getSrcProtocolAddr().getHostAddress());
+            } else {
+                entry.info = String.format("%s is at %s",
+                        header.getSrcProtocolAddr().getHostAddress(),
+                        header.getSrcHardwareAddr());
+            }
+
+        } else if(header.getOperation() == ArpOperation.REQUEST_REVERSE ||
+                  header.getOperation() == ArpOperation.INARP_REQUEST ||
+                  header.getOperation() == ArpOperation.DRARP_REQUEST) {
+
+            entry.info = String.format("Who is %s? Tell %s",
+                    header.getDstHardwareAddr(),
+                    header.getSrcHardwareAddr());
+
+        } else if(header.getOperation() == ArpOperation.REPLY_REVERSE ||
+                  header.getOperation() == ArpOperation.DRARP_REPLY) {
+
+            entry.info = String.format("%s is at %s",
+                    header.getDstHardwareAddr(),
+                    header.getDstProtocolAddr().getHostAddress());
+
+        } else if(header.getOperation() == ArpOperation.DRARP_ERROR) {
+            entry.info = "DRARP Error";
+
+        } else if(header.getOperation() == ArpOperation.INARP_REPLY) {
+            entry.info = String.format("%s is at %s",
+                    header.getSrcHardwareAddr(),
+                    header.getSrcProtocolAddr().getHostAddress());
+
+        } else if(header.getOperation() == ArpOperation.ARP_NAK) {
+            entry.info = "ARP NAK";
+
+        } else if(header.getOperation() == ArpOperation.MARS_REQUEST) {
+            entry.info = String.format("MARS request from %s at %s",
+                    header.getSrcHardwareAddr(),
+                    header.getSrcProtocolAddr().getHostAddress());
+
+        } else if(header.getOperation() == ArpOperation.MARS_MULTI) {
+            entry.info = String.format("MARS MULTI request from %s at %s",
+                    header.getSrcHardwareAddr(),
+                    header.getSrcProtocolAddr().getHostAddress());
+
+        } else if(header.getOperation() == ArpOperation.MARS_MSERV) {
+            entry.info = String.format("MARS MSERV request from %s at %s",
+                    header.getSrcHardwareAddr(),
+                    header.getSrcProtocolAddr().getHostAddress());
+
+        } else if(header.getOperation() == ArpOperation.MARS_JOIN) {
+            entry.info = String.format("MARS JOIN request from %s at %s",
+                    header.getSrcHardwareAddr(),
+                    header.getSrcProtocolAddr().getHostAddress());
+
+        } else if(header.getOperation() == ArpOperation.MARS_LEAVE) {
+            entry.info = String.format("MARS LEAVE from %s at %s",
+                    header.getSrcHardwareAddr(),
+                    header.getSrcProtocolAddr().getHostAddress());
+
+        } else if(header.getOperation() == ArpOperation.MARS_NAK) {
+            entry.info = String.format("MARS NAK from %s at %s",
+                    header.getSrcHardwareAddr(),
+                    header.getSrcProtocolAddr().getHostAddress());
+
+        } else if(header.getOperation() == ArpOperation.MARS_UNSERV) {
+            entry.info = String.format("MARS UNSERV request from %s at %s",
+                    header.getSrcHardwareAddr(),
+                    header.getSrcProtocolAddr().getHostAddress());
+
+        } else if(header.getOperation() == ArpOperation.MARS_SJOIN) {
+            entry.info = String.format("MARS SJOIN request from %s at %s",
+                    header.getSrcHardwareAddr(),
+                    header.getSrcProtocolAddr().getHostAddress());
+
+        } else if(header.getOperation() == ArpOperation.MARS_SLEAVE) {
+            entry.info = String.format("MARS SLEAVE from %s at %s",
+                    header.getSrcHardwareAddr(),
+                    header.getSrcProtocolAddr().getHostAddress());
+
+        } else if(header.getOperation() == ArpOperation.MARS_GROUPLIST_REQUEST) {
+            entry.info = String.format("MARS grouplist request from %s at %s",
+                    header.getSrcHardwareAddr(),
+                    header.getSrcProtocolAddr().getHostAddress());
+
+        } else if(header.getOperation() == ArpOperation.MARS_GROUPLIST_REPLY) {
+            entry.info = String.format("MARS grouplist reply from %s at %s",
+                    header.getSrcHardwareAddr(),
+                    header.getSrcProtocolAddr().getHostAddress());
+
+        } else if(header.getOperation() == ArpOperation.MARS_REDIRECT_MAP) {
+            entry.info = String.format("MARS redirect map from %s at %s",
+                    header.getSrcHardwareAddr(),
+                    header.getSrcProtocolAddr().getHostAddress());
+
+        } else if(header.getOperation() == ArpOperation.MAPOS_UNARP) {
+            entry.info = String.format("MAPOS UNARP request from %s at %s",
+                    header.getSrcHardwareAddr(),
+                    header.getSrcProtocolAddr().getHostAddress());
+
+        } else if(header.getOperation() == ArpOperation.OP_EXP1) {
+            entry.info = String.format("Experimental 1 ( opcode %d )", header.getOperation().value());
+
+        } else if(header.getOperation() == ArpOperation.OP_EXP2) {
+            entry.info = String.format("Experimental 2 ( opcode %d )", header.getOperation().value());
+
+        } else if(header.getOperation().value() == 0 || header.getOperation().value() == 65535) {
+            entry.info = String.format("Reserved opcode %d", header.getOperation().value());
+
+        }else {
+            entry.info = String.format("Unknown ARP opcode 0x%04x", header.getOperation().value());
         }
 
         return false;

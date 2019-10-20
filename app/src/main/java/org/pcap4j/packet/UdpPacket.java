@@ -175,7 +175,6 @@ public final class UdpPacket extends AbstractPacket implements TransportPacket, 
         UdpHeader header = getHeader();
 
         entry.protocol = "UDP";
-        entry.backgroundColor = Color.parseColor("#DAEEFF");
         entry.info = String.format("%d -> %d Len=%d",
                 header.getSrcPort().valueAsInt(),
                 header.getDstPort().valueAsInt(),

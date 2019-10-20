@@ -91,8 +91,7 @@ public final class IcmpV4EchoReplyPacket extends IcmpIdentifiablePacket implemen
             ttl = Integer.toString(ipv4.getTtlAsInt());
         }
 
-        entry.info = String.format("Echo (ping) reply   id=0x%04x, seq=%d, ttl=%s", header.getIdentifierAsInt(), header.getSequenceNumberAsInt(), ttl);
-        entry.backgroundColor = Color.parseColor("#CBCFFF");
+        entry.info = String.format("Echo (ping) reply id=0x%04x, seq=%d, ttl=%s", header.getIdentifierAsInt(), header.getSequenceNumberAsInt(), ttl);
 
         return false;
     }

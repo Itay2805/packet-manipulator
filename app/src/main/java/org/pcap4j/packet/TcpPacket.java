@@ -175,7 +175,6 @@ public final class TcpPacket extends AbstractPacket implements TransportPacket, 
         TcpHeader header = getHeader();
 
         entry.protocol = "TCP";
-        entry.backgroundColor = Color.parseColor("#E7E6FF");
 
         StringBuilder sb = new StringBuilder();
         if(header.getSyn()) sb.append("SYN, ");

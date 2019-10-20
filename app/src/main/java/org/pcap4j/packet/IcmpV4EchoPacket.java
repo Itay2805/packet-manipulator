@@ -91,7 +91,6 @@ public final class IcmpV4EchoPacket extends IcmpIdentifiablePacket implements Pa
         }
 
         entry.info = String.format("Echo (ping) request id=0x%04x, seq=%d, ttl=%s", header.getIdentifierAsInt(), header.getSequenceNumberAsInt(), ttl);
-        entry.backgroundColor = Color.parseColor("#CBCFFF");
 
         return false;
     }

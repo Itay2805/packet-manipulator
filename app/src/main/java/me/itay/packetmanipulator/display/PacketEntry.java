@@ -14,6 +14,6 @@ public class PacketEntry {
     public String info = "?";
 
     public int backgroundColor = Color.WHITE;
-    public int textColor = Color.BLACK;
+    public int textColor = Color.parseColor("#12272e");
 
 }

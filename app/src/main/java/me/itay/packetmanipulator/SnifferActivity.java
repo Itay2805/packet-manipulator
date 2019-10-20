@@ -136,6 +136,8 @@ public class SnifferActivity extends AppCompatActivity implements Runnable, Navi
                     current = current.getPayload();
                 }
 
+                ColorEngine.color(entry);
+
                 // add to adapter
                 adapter.add(entry);
                 recyclerPackets.post(() -> {

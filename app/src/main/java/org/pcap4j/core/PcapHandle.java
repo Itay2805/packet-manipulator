@@ -343,7 +343,7 @@ public class PcapHandle implements Closeable {
                 .append(handle)
                 .append("] Open: [")
                 .append(open)
-                .append("] Filtering Expression: [")
+                .append("] Filtering Expr: [")
                 .append(filteringExpression)
                 .append("]");
 

@@ -85,10 +85,6 @@ public final class IcmpV4DestinationUnreachablePacket extends IcmpV4InvokingPack
 
     @Override
     public boolean dissect(PacketEntry entry) {
-
-        entry.backgroundColor = Color.parseColor("#12272E");
-        entry.textColor = Color.parseColor("#B7F774");
-
         // don't continue parsing payloads (they are ip stuff most probably)
         return true;
     }
