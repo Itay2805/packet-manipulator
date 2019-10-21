@@ -89,7 +89,7 @@ public class ColorEngine {
                header.getType() == IcmpV4Type.SOURCE_QUENCH ||
                header.getType() == IcmpV4Type.REDIRECT ||
                header.getType() == IcmpV4Type.TIME_EXCEEDED) {
-                entry.backgroundColor = Color.parseColor("#fce0ff");
+                entry.backgroundColor = Color.parseColor("#12272e");
                 entry.textColor = Color.parseColor("#b7f774");
             }else {
                 entry.backgroundColor = Color.parseColor("#fce0ff");
@@ -104,7 +104,7 @@ public class ColorEngine {
                header.getType() == IcmpV6Type.PACKET_TOO_BIG ||
                header.getType() == IcmpV6Type.TIME_EXCEEDED ||
                header.getType() == IcmpV6Type.PARAMETER_PROBLEM) {
-                entry.backgroundColor = Color.parseColor("#fce0ff");
+                entry.backgroundColor = Color.parseColor("#12272e");
                 entry.textColor = Color.parseColor("#b7f774");
             }else {
                 entry.backgroundColor = Color.parseColor("#fce0ff");

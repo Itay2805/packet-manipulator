@@ -105,7 +105,24 @@ public class Pcaps {
 
     // TODO: lookupNet
 
-    // TODO: openOffline
+    /**
+     * @param filePath "-" means stdin
+     * @return a new PcapHandle object.
+     * @throws PcapProxyException if an error occurs in the pcap native library.
+     */
+    public static PcapHandle openOffline(String filePath) throws PcapProxyException {
+        if (filePath == null) {
+            StringBuilder sb = new StringBuilder();
+            sb.append("filePath: ").append(filePath);
+            throw new NullPointerException(sb.toString());
+        }
+
+        long handle = PcapProxy.get().pcap_open_offline(filePath);
+
+        return new PcapHandle(handle, TimestampPrecision.MICRO);
+    }
+
+    // TODO: openOffline(String filePath, TimestampPrecision precision)
 
     // TODO: openDead
 

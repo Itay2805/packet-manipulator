@@ -25,7 +25,7 @@ public class pcap_pkthdr {
         this.ts.write(stream);
         stream.writeInt(this.caplen);
         stream.writeInt(this.len);
-        stream.readBytes(this.data);
+        stream.writeBytes(this.data);
     }
 
 }

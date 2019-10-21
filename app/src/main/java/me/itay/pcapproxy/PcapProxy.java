@@ -33,6 +33,7 @@ public class PcapProxy {
     private static final int PCAP_DUMP_FLUSH = 15;
     private static final int PCAP_DUMP_FTELL = 16;
     private static final int PCAP_DUMP_CLOSE = 17;
+    private static final int PCAP_OPEN_OFFLINE = 18;
 
     // global instance
 
@@ -44,6 +45,12 @@ public class PcapProxy {
     }
 
     public static void init(Context context) {
+        if(instance != null) {
+            Log.i("PcapProxy", "There is already an instance of the proxy running, killing it");
+            instance.logger_thread.interrupt();
+            instance.process.destroy();
+        }
+
         instance = new PcapProxy(context);
         Log.i("PcapProxy", String.format("successfully loaded the native pcap library: %s", instance.pcap_lib_version()));
     }
@@ -216,6 +223,13 @@ public class PcapProxy {
     public void pcap_dump_close(long dumper) {
         stream.writeInt(PCAP_DUMP_CLOSE);
         stream.writeLong(dumper);
+    }
+
+    public long pcap_open_offline(String filePath) {
+        stream.writeInt(PCAP_OPEN_OFFLINE);
+        stream.writeString(filePath);
+        stream.checkErr();
+        return stream.readLong();
     }
 
 }

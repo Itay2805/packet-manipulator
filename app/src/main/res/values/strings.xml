@@ -13,4 +13,6 @@
     <string name="go_to_last">Go to last</string>
     <string name="go_to_first">Go to first</string>
     <string name="go_to">Go to …</string>
+    <string name="start">Start</string>
+    <string name="close">Close</string>
 </resources>

@@ -87,7 +87,6 @@ public class MainActivity extends AppCompatActivity {
                 Intent intent = new Intent(this, SnifferActivity.class);
                 intent.putExtra("INTERFACE_NAME", networkInterface.getName());
                 startActivity(intent);
-                finish();
             });
         }
     }
