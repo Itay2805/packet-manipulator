@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="16dp">
+
+    <TextView
+        android:id="@+id/lblPacketInfo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="A long packet info \nmodal which you can see useful info about \nhow the packet \nlooks, \nthis is \njust a \nbig text \nso you can feel it"/>
+
+</LinearLayout>

@@ -7,6 +7,7 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Consumer;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -15,10 +16,21 @@ import me.itay.packetmanipulator.display.PacketEntry;
 public class RecyclerPacketsAdapter extends RecyclerView.Adapter<RecyclerPacketsAdapter.ViewHolder> {
 
     private final List<PacketEntry> entries = new ArrayList<>();
+    private final OnClick<PacketEntry> onclick;
+
+    public RecyclerPacketsAdapter(OnClick<PacketEntry> onclick) {
+        this.onclick = onclick;
+    }
 
     public void add(PacketEntry entry) {
         synchronized (entries) {
             entries.add(entry);
+        }
+    }
+
+    public PacketEntry get(int position) {
+        synchronized (entries) {
+            return entries.get(position);
         }
     }
 
@@ -47,6 +59,11 @@ public class RecyclerPacketsAdapter extends RecyclerView.Adapter<RecyclerPackets
         holder.lblInfo.setTextColor(entry.textColor);
 
         holder.container.setBackgroundColor(entry.backgroundColor);
+        holder.container.setOnClickListener((view) -> {
+            if(onclick != null) {
+                onclick.click(get(position));
+            }
+        });
     }
 
     @Override

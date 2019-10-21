@@ -80,7 +80,9 @@ public class SnifferActivity extends AppCompatActivity implements Runnable, Navi
         btnSetFilter = findViewById(R.id.btnSetFilter);
         txtFilterExpression = findViewById(R.id.txtFilterExpression);
         recyclerPackets = findViewById(R.id.recyclerPackets);
-        adapter = new RecyclerPacketsAdapter();
+        adapter = new RecyclerPacketsAdapter((entry) -> {
+            new PacketInfoBottomSheet(entry.original.toString()).show(getSupportFragmentManager(), TAG);
+        });
         recyclerPackets.setAdapter(adapter);
         recyclerPackets.setLayoutManager(new LinearLayoutManager(this));
 

@@ -6,7 +6,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/sniffer_drawer"
     android:fitsSystemWindows="true"
-    tools:openDrawer="end"
     tools:context=".SnifferActivity">
 
     <LinearLayout
