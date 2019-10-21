@@ -64,6 +64,8 @@ int                 (*pcap_dump_flush)(pcap_dumper_t *p);
 long                (*pcap_dump_ftell)(pcap_dumper_t *);
 void                (*pcap_dump_close)(pcap_dumper_t *p);
 
+pcap_t*             (*pcap_open_offline)(const char *fname, char *errbuf);
+
 ///////////////////////////////////////////////
 // stream handling
 ///////////////////////////////////////////////
@@ -366,6 +368,26 @@ void comm_pcap_dump_close() {
     pcap_dump_close(handle);
 }
 
+void comm_pcap_open_offline() {
+    char errbuf[256] = {0};
+    char* filename = read_string();
+
+    pcap_t* handle = pcap_open_offline(filename, errbuf);
+    if(handle == NULL) {
+
+        write_bool(false);
+        write_string(errbuf);
+
+    }else {
+
+        write_bool(true);
+        write_long((int64_t) handle);
+
+    }
+
+    free(filename);
+}
+
 ///////////////////////////////////////////////
 // Server main
 ///////////////////////////////////////////////
@@ -388,6 +410,7 @@ void comm_pcap_dump_close() {
 #define PCAP_DUMP_FLUSH     15
 #define PCAP_DUMP_FTELL     16
 #define PCAP_DUMP_CLOSE     17
+#define PCAP_OPEN_OFFLINE   18
 
 // handlers per function
 typedef void (*command_handler_t)();
@@ -409,6 +432,7 @@ command_handler_t handlers[] = {
         [PCAP_DUMP_FLUSH] = comm_pcap_dump_flush,
         [PCAP_DUMP_FTELL] = comm_pcap_dump_ftell,
         [PCAP_DUMP_CLOSE] = comm_pcap_dump_close,
+        [PCAP_OPEN_OFFLINE] = comm_pcap_open_offline,
 };
 
 #define LOAD_FUNC(name) \
@@ -453,6 +477,7 @@ int main(int argc, char* argv[]) {
     LOAD_FUNC(pcap_dump_flush);
     LOAD_FUNC(pcap_dump_ftell);
     LOAD_FUNC(pcap_dump_close);
+    LOAD_FUNC(pcap_open_offline);
 
     // handling of commands
     while(1) {

@@ -107,34 +107,59 @@ public class SnifferActivity extends AppCompatActivity implements Runnable, Navi
         /////////////////////////////////////////////////////////////////
         // get the device
         /////////////////////////////////////////////////////////////////
-        String pifName = getIntent().getStringExtra("INTERFACE_NAME");
-        pif = Pcaps.getDevByName(pifName);
-        assert pif != null;
-        Log.d(TAG, pif.toString());
+        String type = getIntent().getStringExtra("CAPTURE_TYPE");
+        if(type.equals("live")) {
 
-        // attempt to open a live capture
-        // TODO: Pass PROMISCOUS in an extra of the intent
-        handle = pif.openLive(1500, PcapNetworkInterface.PromiscuousMode.PROMISCUOUS, 0);
-        Log.d(TAG, handle.toString());
+            // live capture
+            String pifName = getIntent().getStringExtra("INTERFACE_NAME");
+            pif = Pcaps.getDevByName(pifName);
+            Log.d(TAG, pif.toString());
 
-        // start the capturing thread
-        captureThread = new Thread(this, "SnifferActivityCapture");
-        captureThread.start();
+            PcapNetworkInterface.PromiscuousMode mode = PcapNetworkInterface.PromiscuousMode.NONPROMISCUOUS;
+            if(getIntent().getBooleanExtra("PROMISCUOUS", false)) {
+                mode = PcapNetworkInterface.PromiscuousMode.PROMISCUOUS;
+            }
 
-        /////////////////////////////////////////////////////////////////
-        // finish setting the layout
-        /////////////////////////////////////////////////////////////////
+            // attempt to open a live capture
+            handle = pif.openLive(1500, mode, 0);
+            Log.d(TAG, handle.toString());
 
-        // set the interface info
-        lblInterfaceName.setText(String.format("%s (%s)", pif.getName(), handle.getDlt().name()));
-        if(pif.getDescription() != null) {
-            lblInterfaceDescription.setText(pif.getDescription());
+            // start the capturing thread
+            captureThread = new Thread(this, "SnifferActivityCapture");
+            captureThread.start();
+
+            /////////////////////////////////////////////////////////////////
+            // finish setting the layout
+            /////////////////////////////////////////////////////////////////
+
+            // set the interface info
+            lblInterfaceName.setText(String.format("%s (%s)", pif.getName(), handle.getDlt().name()));
+            if(pif.getDescription() != null) {
+                lblInterfaceDescription.setText(pif.getDescription());
+            }else {
+                lblInterfaceDescription.setText("No description");
+            }
+
+            // make sure only the needed menu buttons are visible
+            updateMenu();
+
+
+        }else if(type.equals("offline")) {
+
+            // offline capture (from file)
+            running = true;
+            optionsView.getMenu().findItem(R.id.option_stop).setVisible(false);
+            optionsView.getMenu().findItem(R.id.option_start).setVisible(false);
+            optionsView.getMenu().findItem(R.id.option_save).setVisible(false);
+
+            String filename = getIntent().getStringExtra("PCAP_FILE");
+            handle = Pcaps.openOffline(filename);
+
+            lblInterfaceName.setText("Offline capture");
+            lblInterfaceDescription.setText(filename);
         }else {
-            lblInterfaceDescription.setText("No description");
+            assert false;
         }
-
-        // make sure only the needed menu buttons are visible
-        updateMenu();
     }
 
     private void updateMenu() {

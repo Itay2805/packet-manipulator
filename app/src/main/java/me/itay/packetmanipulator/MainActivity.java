@@ -4,19 +4,25 @@ import androidx.appcompat.app.AppCompatActivity;
 import me.itay.pcapproxy.PcapProxy;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
+import android.widget.Switch;
 
 import com.stericson.RootTools.RootTools;
 
 import org.pcap4j.core.PcapNetworkInterface;
 import org.pcap4j.core.Pcaps;
 
+import java.io.File;
 import java.net.NetworkInterface;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
@@ -33,7 +39,9 @@ public class MainActivity extends AppCompatActivity {
 
         // get the controls of the current layout
         Spinner spnrInterface = findViewById(R.id.spnrInterface);
+        Switch switchPromiscuous = findViewById(R.id.switchPromiscuous);
         Button btnStartSniffer = findViewById(R.id.btnStartSniffer);
+        Button btnChooseFile = findViewById(R.id.btnChooseFile);
 
         // check we have root
         if(!RootTools.isRootAvailable() || !RootTools.isAccessGiven()) {
@@ -86,8 +94,38 @@ public class MainActivity extends AppCompatActivity {
                 PcapNetworkInterface networkInterface = pifs.get(spnrInterface.getSelectedItemPosition());
                 Intent intent = new Intent(this, SnifferActivity.class);
                 intent.putExtra("INTERFACE_NAME", networkInterface.getName());
+                intent.putExtra("PROMISCUOUS", switchPromiscuous.isChecked());
+                intent.putExtra("CAPTURE_TYPE", "live");
                 startActivity(intent);
+
             });
+
+            btnChooseFile.setOnClickListener((view) -> {
+                Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+                intent.addCategory(Intent.CATEGORY_OPENABLE);
+                intent.setType("*/*");
+                startActivityForResult(intent, 42);
+            });
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent resultData) {
+        if (requestCode == 42 && resultCode == Activity.RESULT_OK) {
+            Uri uri = null;
+            if (resultData != null) {
+                uri = resultData.getData();
+                assert uri != null;
+
+                File file = new File(uri.getPath());
+
+                Intent intent = new Intent(this, SnifferActivity.class);
+                intent.putExtra("PCAP_FILE", uri.getPath());
+                intent.putExtra("CAPTURE_TYPE", "offline");
+                startActivity(intent);
+            }
+        }else {
+            super.onActivityResult(requestCode, resultCode, resultData);
         }
     }
 

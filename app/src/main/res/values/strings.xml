@@ -15,4 +15,10 @@
     <string name="go_to">Go to …</string>
     <string name="start">Start</string>
     <string name="close">Close</string>
+    <string name="live_capture">Live Capture</string>
+    <string name="promiscuous">Promiscuous</string>
+    <string name="please_choose_interface">Please choose interface</string>
+    <string name="start_sniffer">Start sniffer</string>
+    <string name="offline_capture">Offline Capture</string>
+    <string name="choose_pcap_file">Choose pcap file</string>
 </resources>
